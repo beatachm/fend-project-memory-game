@@ -37,7 +37,7 @@ h1 {
  * Styles for the deck of cards
  */
 
-#deck {
+.deck {
     width: 100%;
     display: flex;
     flex-wrap: wrap;
@@ -117,14 +117,14 @@ h1 {
     margin-bottom: 10px;
 }
 
-#stars {
+.stars {
     margin: 0;
     padding: 0;
     display: inline-block;
     margin: 0 5px 0 0;
 }
 
-#stars li {
+.stars li {
     list-style: none;
     display: inline-block;
 }

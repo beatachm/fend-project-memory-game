@@ -1,7 +1,7 @@
 /*
  * Create a list that holds all of your cards
  */
-var cards = [
+let cards = [
     "fa-anchor",
     "fa-headphones",
     "fa-camera",
@@ -12,16 +12,16 @@ var cards = [
     "fa-binoculars"
 ];
 cards = cards.concat(cards);
-var htmlTemplate =
+let htmlTemplate =
         '<li class="card"><div class="flipper"><div class="front">'+
         '<i class="fa fa-"></i></div></div></li>';
-var deck = document.getElementById("deck");
-var stars = document.getElementById("stars").getElementsByTagName("i");
-var ratingBreakpoints = [10,20,30];
-var steps = 0;
-var highlightedCard = -1;
-var matchedCards = [];
-var startTime;
+let deck = document.getElementsByClassName("deck")[0];
+let stars = document.getElementsByClassName("stars")[0].getElementsByTagName("i");
+let ratingBreakpoints = [10,20,30];
+let steps = 0;
+let highlightedCard = -1;
+let matchedCards = [];
+let startTime;
 
 /*
  * Display the cards on the page
@@ -32,7 +32,7 @@ var startTime;
 
 // Shuffle function from http://stackoverflow.com/a/2450976
 function shuffle(array) {
-    var currentIndex = array.length, temporaryValue, randomIndex;
+    let currentIndex = array.length, temporaryValue, randomIndex;
 
     while (currentIndex !== 0) {
         randomIndex = Math.floor(Math.random() * currentIndex);
@@ -57,7 +57,7 @@ function reset(){
     });
     Array.from(document.getElementsByClassName("card")).forEach((card, index) => {
         card.onclick = function(){
-            cardClicked(index, matchedCards, highlightCard);
+            cardClicked(index);
         };
     });
     displayStepsAndRating();
@@ -94,7 +94,7 @@ function checkMatch(secondCard){
         matchedCards.push(secondCard);
     }
     else{
-        var firstCard = highlightedCard;
+        let firstCard = highlightedCard;
         setTimeout(function(){
             closeCard(firstCard);
             closeCard(secondCard);
@@ -111,7 +111,7 @@ function incrementMove(){
 }
 
 function displayStepsAndRating(){
-    var starRating = 0;
+    let starRating = 0;
     ratingBreakpoints.forEach(br => {
         if(br >= steps){
             starRating++;
@@ -125,13 +125,13 @@ function displayStepsAndRating(){
             star.className = "fa fa-star-o";
         }
     });
-    document.getElementById("moves").innerText = steps;
+    document.getElementsByClassName("moves")[0].innerText = steps;
 }
 
 function cardClicked(cardId){
-    var isMatched = matchedCards.indexOf(cardId) >= 0;
-    var isHighlighted = highlightedCard == cardId;
-    var isAnyCardHighlighted = highlightedCard >= 0;
+    let isMatched = matchedCards.indexOf(cardId) >= 0;
+    let isHighlighted = highlightedCard == cardId;
+    let isAnyCardHighlighted = highlightedCard >= 0;
 
     if(!isMatched && !isAnyCardHighlighted){
         highlightCard(cardId);
@@ -153,8 +153,8 @@ function checkWinningCondition(){
 }
 
 function displayEndMessage(){
-    var elapsedTime = Math.round((new Date() - startTime) / 1000);
-    var msg = `Congratulations! You completed the game in ${elapsedTime}s and ${steps} steps.`
+    let elapsedTime = Math.round((new Date() - startTime) / 1000);
+    let msg = `Congratulations! You completed the game in ${elapsedTime}s and ${steps} steps.`
     document.getElementsByClassName("message")[0].innerText = msg;
     document.getElementsByClassName("modal")[0].classList.remove("hidden");
 }
