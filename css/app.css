@@ -17,6 +17,9 @@ body {
 }
 
 body {
+    /* Wood texture from
+     * http://www.designbolts.com/2013/02/09/20-high-quality-free-seamless-wood-textures-photoshop-patterns-for-3d-mapping/
+     */
     background: #ffffff url('../img/wood.png'); /* Background pattern from Subtle Patterns */
     font-family: 'Coda', cursive;
 }
@@ -94,6 +97,9 @@ h1 {
 .flipper::after {
     content: "";
     display: block;
+    /* Card back from
+     * https://www.vecteezy.com/vector-art/128591-playing-card-back-vectors
+     */
     background: #ffffff url('../img/back.png');
     background-clip: content-box;
     padding: 5px;
