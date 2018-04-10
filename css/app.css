@@ -17,7 +17,7 @@ body {
 }
 
 body {
-    background: #ffffff url('../img/geometry2.png'); /* Background pattern from Subtle Patterns */
+    background: #ffffff url('../img/wood.png'); /* Background pattern from Subtle Patterns */
     font-family: 'Coda', cursive;
 }
 
@@ -37,48 +37,74 @@ h1 {
  * Styles for the deck of cards
  */
 
-.deck {
-    width: 660px;
-    min-height: 680px;
-    background: linear-gradient(160deg, #02ccba 0%, #aa7ecd 100%);
-    padding: 32px;
-    border-radius: 10px;
-    box-shadow: 12px 15px 20px 0 rgba(46, 61, 73, 0.5);
+#deck {
+    width: 100%;
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between;
-    align-items: center;
-    margin: 0 0 3em;
+    padding: 0px 5px;
 }
 
-.deck .card {
-    height: 125px;
-    width: 125px;
-    background: #2e3d49;
-    font-size: 0;
-    color: #ffffff;
-    border-radius: 8px;
-    cursor: pointer;
+.card {
+    width: 25%;
+    display: flex;   
+    position: relative;
+    perspective: 1000px;
+    padding: 3px;
+}
+/* 
+   Fixed aspect ration trick from 
+   http://www.mademyday.de/css-height-equals-width-with-pure-css.html 
+
+   Flip animation from
+   https://davidwalsh.name/css-flip 
+*/
+.card::before{
+    content: "";
+    padding-top: 100%;
+    display: block;
+}
+.flipper {
+    width: 100%;
+    height: 100%;
+    background-color: #ffffff;
+    border-radius: 5px;
+    box-shadow: 5px 5px 10px 0px rgba(80,80,80,1);
+    transform-style: preserve-3d;
+    transition: 0.6s;
+    position: relative;
+}
+.card.open .flipper {
+    transform: rotateY(180deg);
+    box-shadow: -5px 5px 10px 0px rgba(80,80,80,1);
+}
+.card.highlighted .flipper{
+    transform: scale(1.2);
+}
+.car.highlightedhover{
+    z-index: 2;
+}
+.front, .flipper::after{
+    backface-visibility: hidden;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+.flipper::after {
+    content: "";
+    display: block;
+    background: #ffffff url('../img/back.png');
+    background-clip: content-box;
+    padding: 5px;
+}
+.front{
+    z-index: 2;
     display: flex;
     justify-content: center;
     align-items: center;
-    box-shadow: 5px 2px 20px 0 rgba(46, 61, 73, 0.5);
-}
-
-.deck .card.open {
-    transform: rotateY(0);
-    background: #02b3e4;
-    cursor: default;
-}
-
-.deck .card.show {
-    font-size: 33px;
-}
-
-.deck .card.match {
-    cursor: default;
-    background: #02ccba;
-    font-size: 33px;
+    font-size: 2em;
+    transform: rotateY(180deg);
 }
 
 /*
@@ -91,14 +117,14 @@ h1 {
     margin-bottom: 10px;
 }
 
-.score-panel .stars {
+#stars {
     margin: 0;
     padding: 0;
     display: inline-block;
     margin: 0 5px 0 0;
 }
 
-.score-panel .stars li {
+#stars li {
     list-style: none;
     display: inline-block;
 }
@@ -106,4 +132,53 @@ h1 {
 .score-panel .restart {
     float: right;
     cursor: pointer;
+}
+
+/* 
+ * Styles for the message box
+ */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(80,80,80,0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 15%;
+    visibility: visible;
+    opacity: 1;
+    transition: opacity 600ms, visibility 600ms;
+}
+.modal.hidden{
+    visibility: hidden;
+    opacity: 0;
+    
+}
+.modal .message{
+    background-color: #ffffff;
+    border-radius: 5px;
+    padding: 10px;
+}
+
+/* 
+ * Small changes for larger devices
+ */
+@media only screen and (min-width: 700px) {
+    .container{
+        padding: 15px;
+    }
+    body{
+        font-size: 1.5em;
+    }
+    .card{
+        padding: 6px;
+    }
+}
+@media only screen and (min-width: 1100px) {
+    .card{
+        width: 12.5%;
+    }
 }
