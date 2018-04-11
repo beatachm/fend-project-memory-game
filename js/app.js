@@ -166,7 +166,7 @@ function hideMessage() {
 }
 
 function formatTimestamp(time) {
-    return `${Math.floor(time/3600000).toString().padStart(2,'0')}:${Math.floor(time/60000).toString().padStart(2,'0')}:${Math.floor(time/1000).toString().padStart(2,'0')}`;
+    return `${Math.floor(time/3600000).toString().padStart(2,'0')}:${Math.floor(time/60000%60).toString().padStart(2,'0')}:${Math.floor(time/1000%60).toString().padStart(2,'0')}`;
 }
 
 function displayTimer() {
