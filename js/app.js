@@ -13,15 +13,15 @@ let cards = [
 ];
 cards = cards.concat(cards);
 let htmlTemplate =
-        '<li class="card"><div class="flipper"><div class="front">'+
-        '<i class="fa fa-"></i></div></div></li>';
+    '<li class="card"><div class="flipper"><div class="front">' +
+    '<i class="fa fa-"></i></div></div></li>';
 let deck = document.getElementsByClassName("deck")[0];
-let stars = document.getElementsByClassName("stars")[0].getElementsByTagName("i");
-let ratingBreakpoints = [10,20,30];
+let ratingBreakpoints = [15, 25];
 let steps = 0;
 let highlightedCard = -1;
 let matchedCards = [];
 let startTime;
+let timerInterval;
 
 /*
  * Display the cards on the page
@@ -32,7 +32,8 @@ let startTime;
 
 // Shuffle function from http://stackoverflow.com/a/2450976
 function shuffle(array) {
-    let currentIndex = array.length, temporaryValue, randomIndex;
+    let currentIndex = array.length,
+        temporaryValue, randomIndex;
 
     while (currentIndex !== 0) {
         randomIndex = Math.floor(Math.random() * currentIndex);
@@ -45,7 +46,7 @@ function shuffle(array) {
     return array;
 }
 
-function reset(){
+function reset() {
     cards = shuffle(cards);
     deck.innerHTML = "";
     steps = 0;
@@ -56,12 +57,14 @@ function reset(){
         deck.innerHTML += htmlTemplate.replace("fa-", card);
     });
     Array.from(document.getElementsByClassName("card")).forEach((card, index) => {
-        card.onclick = function(){
+        card.onclick = function () {
             cardClicked(index);
         };
     });
     displayStepsAndRating();
     hideMessage();
+    // Start background task that displays game time.
+    timerInterval = setInterval(displayTimer, 200);
 }
 
 /*
@@ -74,28 +77,27 @@ function reset(){
  *    + increment the move counter and display it on the page (put this functionality in another function that you call from this one)
  *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
  */
-function openCard(cardId){
+function openCard(cardId) {
     deck.getElementsByTagName("li")[cardId].classList.add("open");
 }
 
-function closeCard(cardId){
+function closeCard(cardId) {
     deck.getElementsByTagName("li")[cardId].classList.remove("open");
 }
 
-function highlightCard(cardId){
+function highlightCard(cardId) {
     highlightedCard = cardId;
     openCard(cardId);
 }
 
-function checkMatch(secondCard){
+function checkMatch(secondCard) {
     openCard(secondCard);
-    if(cards[highlightedCard] === cards[secondCard]){
+    if (cards[highlightedCard] === cards[secondCard]) {
         matchedCards.push(highlightedCard);
         matchedCards.push(secondCard);
-    }
-    else{
+    } else {
         let firstCard = highlightedCard;
-        setTimeout(function(){
+        setTimeout(function () {
             closeCard(firstCard);
             closeCard(secondCard);
         }, 1000);
@@ -104,63 +106,75 @@ function checkMatch(secondCard){
     incrementMove();
 }
 
-function incrementMove(){
+function incrementMove() {
     steps++;
     displayStepsAndRating();
     checkWinningCondition();
 }
 
-function displayStepsAndRating(){
-    let starRating = 0;
+function displayStepsAndRating() {
+    let starRating = 1;
     ratingBreakpoints.forEach(br => {
-        if(br >= steps){
+        if (br >= steps) {
             starRating++;
         }
     });
-    Array.from(stars).forEach((star, index) => {
-        if(starRating > index){
-            star.className = "fa fa-star";
-        }
-        else{
-            star.className = "fa fa-star-o";
-        }
+    Array.from(document.getElementsByClassName('stars')).forEach(stars => {
+        Array.from(stars.getElementsByTagName('i')).forEach((star, index) => {
+            if (starRating > index) {
+                star.className = "fa fa-star";
+            } else {
+                star.className = "fa fa-star-o";
+            }
+        });
     });
     document.getElementsByClassName("moves")[0].innerText = steps;
 }
 
-function cardClicked(cardId){
+function cardClicked(cardId) {
     let isMatched = matchedCards.indexOf(cardId) >= 0;
     let isHighlighted = highlightedCard == cardId;
     let isAnyCardHighlighted = highlightedCard >= 0;
 
-    if(!isMatched && !isAnyCardHighlighted){
+    if (!isMatched && !isAnyCardHighlighted) {
         highlightCard(cardId);
-    }
-    else if (!isMatched && !isHighlighted){
+    } else if (!isMatched && !isHighlighted) {
         checkMatch(cardId);
     }
 
     // start timer on first click
-    if(typeof(startTime) === 'undefined'){
+    if (typeof (startTime) === 'undefined') {
         startTime = new Date();
     }
 }
 
-function checkWinningCondition(){
-    if(matchedCards.length == cards.length){
+function checkWinningCondition() {
+    if (matchedCards.length == cards.length) {
+        clearInterval(timerInterval);
         displayEndMessage();
     }
 }
 
-function displayEndMessage(){
-    let elapsedTime = Math.round((new Date() - startTime) / 1000);
-    let msg = `Congratulations! You completed the game in ${elapsedTime}s and ${steps} steps.`
-    document.getElementsByClassName("message")[0].innerText = msg;
+function displayEndMessage() {
+    let msg = `You completed the game in ${formatTimestamp(new Date() - startTime)} and&nbsp;${steps}&nbsp;steps.`
+    document.getElementsByClassName("message-text")[0].innerHTML = msg;
     document.getElementsByClassName("modal")[0].classList.remove("hidden");
 }
 
-function hideMessage(){
+function hideMessage() {
     document.getElementsByClassName("modal")[0].classList.add("hidden");
+}
+
+function formatTimestamp(time) {
+    return `${Math.floor(time/3600000).toString().padStart(2,'0')}:${Math.floor(time/60000).toString().padStart(2,'0')}:${Math.floor(time/1000).toString().padStart(2,'0')}`;
+}
+
+function displayTimer() {
+    let timeDifference = 0;
+    if (typeof (startTime) !== 'undefined') {
+        timeDifference = new Date() - startTime
+    }
+    document.getElementsByClassName("game-time")[0].innerText = formatTimestamp(timeDifference);;
 }
 
 reset();
