@@ -2,19 +2,27 @@
 
 ## Table of Contents
 
-* [Instructions](#instructions)
-* [Contributing](#contributing)
+* [Dependecies](#Dependecies)
+* [Instruction](#instruction)
+* [Scorring](#scorring)
 
-## Instructions
+## Dependecies 
 
-The starter project has some HTML and CSS styling to display a static version of the Memory Game project. You'll need to convert this project from a static project to an interactive one. This will require modifying the HTML and CSS files, but primarily the JavaScript file.
+The memory game following external libraries:
+- [Google Coda Font](https://fonts.google.com/specimen/Coda)
+- [Font Awesome icons](https://fontawesome.com/)
 
-To get started, open `js/app.js` and start building out the app's functionality
+Following free graphics were used:
+- Wood texture from [Designbolts](http://www.designbolts.com/2013/02/09/20-high-quality-free-seamless-wood-textures-photoshop-patterns-for-3d-mapping/)
+- Playing card back from [Vecteezy](https://www.vecteezy.com/vector-art/128591-playing-card-back-vectors)
 
-For specific, detailed instructions, look at the project instructions in the [Udacity Classroom](https://classroom.udacity.com/me).
+## Instruction
 
-## Contributing
+To start the game, open the _index.html_ file in a web browser.
 
-This repository is the starter code for _all_ Udacity students. Therefore, we most likely will not accept pull requests.
+## Scorring
 
-For details, check out [CONTRIBUTING.md](CONTRIBUTING.md).
+The game mesures time and number of steps used to finish it. Based on the number of steps, player is assigned stars:
+- 3 stars for 15 or less moves
+- 2 stars for 16 to 25 moves
+- 1 star for more than 25 moves
